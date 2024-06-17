@@ -11,16 +11,18 @@ const refs = {
   galleryEl: document.querySelector('.gallery'),
   loader: document.querySelector('.loader'),
 };
+const lightbox = new SimpleLightbox('.gallery a');
 
 refs.formEl.addEventListener('submit', e => {
   e.preventDefault();
-  const value = e.target.elements.searchQuery.value;
+  const value = e.target.elements.searchQuery.value.trim();
 
   if (!value) {
     iziToast.show({
-      message: `"Sorry, there are no images matching your search query. Please try again!" `,
+      message: 'Enter the value',
       color: 'red',
     });
+    refs.galleryEl.innerHTML = ''; // Очищення галереї
     return;
   }
 
@@ -29,17 +31,16 @@ refs.formEl.addEventListener('submit', e => {
     .then(data => {
       if (data.hits.length === 0) {
         iziToast.show({
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
+          message: 'Sorry, there are no images matching your search query. Please try again!',
           color: 'red',
         });
+        refs.galleryEl.innerHTML = ''; 
         return;
       }
       refs.galleryEl.innerHTML = '';
       const markup = renderImages(data.hits);
       refs.galleryEl.insertAdjacentHTML('beforeend', markup);
 
-      const lightbox = new SimpleLightbox('.gallery a');
       lightbox.refresh();
     })
     .catch(error => {
