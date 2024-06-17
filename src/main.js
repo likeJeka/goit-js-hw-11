@@ -22,7 +22,7 @@ refs.formEl.addEventListener('submit', e => {
       message: 'Enter the value',
       color: 'red',
     });
-    refs.galleryEl.innerHTML = ''; // Очищення галереї
+    refs.galleryEl.innerHTML = ''; 
     return;
   }
 
